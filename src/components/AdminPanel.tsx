@@ -10,7 +10,8 @@ export function AdminPanel() {
   const [vacationStatus, setVacationStatus] = useState<VacationStatus | null>(null);
   const [formData, setFormData] = useState({
     is_on_vacation: false,
-    return_date: '',
+    start_date: '',
+    end_date: '',
     message: ''
   });
   const navigate = useNavigate();
@@ -40,7 +41,8 @@ export function AdminPanel() {
       setVacationStatus(data);
       setFormData({
         is_on_vacation: data.is_on_vacation,
-        return_date: data.return_date || '',
+        start_date: data.start_date || '',
+        end_date: data.end_date || '',
         message: data.message || ''
       });
     }
@@ -60,7 +62,8 @@ export function AdminPanel() {
         .from('vacation_status')
         .update({
           is_on_vacation: formData.is_on_vacation,
-          return_date: formData.return_date || null,
+          start_date: formData.start_date || null,
+          end_date: formData.end_date || null,
           message: formData.message || null,
           updated_at: new Date().toISOString()
         })
@@ -126,15 +129,29 @@ export function AdminPanel() {
             {formData.is_on_vacation && (
               <div className="space-y-4 pl-7 border-l-2 border-blue-100">
                 <div>
-                  <label htmlFor="return_date" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="start_date" className="block text-sm font-medium text-gray-700 mb-2">
                     <Calendar className="h-4 w-4 inline mr-2" />
-                    Datum návratu
+                    Datum začátku dovolené
                   </label>
                   <input
                     type="date"
-                    id="return_date"
-                    value={formData.return_date}
-                    onChange={(e) => setFormData({ ...formData, return_date: e.target.value })}
+                    id="start_date"
+                    value={formData.start_date}
+                    onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+                    className="block w-full max-w-xs px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-blue-400"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="end_date" className="block text-sm font-medium text-gray-700 mb-2">
+                    <Calendar className="h-4 w-4 inline mr-2" />
+                    Datum konce dovolené
+                  </label>
+                  <input
+                    type="date"
+                    id="end_date"
+                    value={formData.end_date}
+                    onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
                     className="block w-full max-w-xs px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-blue-400"
                   />
                 </div>
@@ -175,9 +192,14 @@ export function AdminPanel() {
                 <p className="text-sm text-gray-600">
                   <strong>Stav:</strong> {vacationStatus.is_on_vacation ? 'Uzavřeno' : 'Otevřeno'}
                 </p>
-                {vacationStatus.return_date && (
+                {vacationStatus.start_date && (
                   <p className="text-sm text-gray-600 mt-1">
-                    <strong>Návrat:</strong> {new Date(vacationStatus.return_date).toLocaleDateString('cs-CZ')}
+                    <strong>Od:</strong> {new Date(vacationStatus.start_date).toLocaleDateString('cs-CZ')}
+                  </p>
+                )}
+                {vacationStatus.end_date && (
+                  <p className="text-sm text-gray-600 mt-1">
+                    <strong>Do:</strong> {new Date(vacationStatus.end_date).toLocaleDateString('cs-CZ')}
                   </p>
                 )}
                 <p className="text-sm text-gray-600 mt-1">

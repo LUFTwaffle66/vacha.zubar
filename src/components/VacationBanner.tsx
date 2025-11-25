@@ -32,11 +32,17 @@ export function VacationBanner({ vacationStatus }: VacationBannerProps) {
               {vacationStatus.message}
             </p>
           )}
-          {vacationStatus.return_date && (
+          {(vacationStatus.start_date || vacationStatus.end_date) && (
             <div className="flex items-center text-amber-700">
               <Calendar className="h-4 w-4 mr-2" />
               <span>
-                Návrat do ordinace: {formatDate(vacationStatus.return_date)}
+                {vacationStatus.start_date && vacationStatus.end_date ? (
+                  <>Dovolená od {formatDate(vacationStatus.start_date)} do {formatDate(vacationStatus.end_date)}</>
+                ) : vacationStatus.end_date ? (
+                  <>Návrat do ordinace: {formatDate(vacationStatus.end_date)}</>
+                ) : vacationStatus.start_date ? (
+                  <>Dovolená od {formatDate(vacationStatus.start_date)}</>
+                ) : null}
               </span>
             </div>
           )}

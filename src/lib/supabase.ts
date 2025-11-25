@@ -8,7 +8,8 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 export type VacationStatus = {
   id: string
   is_on_vacation: boolean
-  return_date: string | null
+  start_date: string | null
+  end_date: string | null
   message: string | null
   updated_at: string
 }
